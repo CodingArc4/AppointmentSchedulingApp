@@ -1,4 +1,5 @@
 using AppointmentSchedulingApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentSchedulingApp
@@ -17,6 +18,9 @@ namespace AppointmentSchedulingApp
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            //Adding identity service
+            builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
 
