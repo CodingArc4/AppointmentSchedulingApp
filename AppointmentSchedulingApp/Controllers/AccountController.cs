@@ -1,9 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppointmentSchedulingApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentSchedulingApp.Controllers
 {
     public class AccountController : Controller
     {
+
+        private readonly ApplicationDbContext _context;
+
+        public AccountController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
