@@ -32,6 +32,7 @@ namespace AppointmentSchedulingApp.Controllers
 
         public async Task<IActionResult> Register()
         {
+            //if roles doesnt exists then create roles
             if(!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
@@ -62,7 +63,7 @@ namespace AppointmentSchedulingApp.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-            }
+            } 
             return View();
         }
     }
