@@ -74,7 +74,7 @@ namespace AppointmentSchedulingApp.Controllers
                     Name = registerViewModel.Name,
                 };
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user,registerViewModel.Password);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, registerViewModel.RoleName);
