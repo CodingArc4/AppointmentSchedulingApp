@@ -3,6 +3,7 @@ using AppointmentSchedulingApp.Models.ViewModels;
 using AppointmentSchedulingApp.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using System.Linq.Expressions;
 
 namespace AppointmentSchedulingApp.Controllers
@@ -28,6 +29,24 @@ namespace AppointmentSchedulingApp.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        //POST Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password,
+                    loginViewModel.RememberMe,false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", "Invalid Login attempt!");
+            }
+            return View(loginViewModel);
         }
 
         public async Task<IActionResult> Register()
@@ -62,9 +81,19 @@ namespace AppointmentSchedulingApp.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
-
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
             } 
-            return View();
+            return View(registerViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login","Account");
         }
     }
 }
