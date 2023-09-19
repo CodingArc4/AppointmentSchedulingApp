@@ -42,7 +42,7 @@ namespace AppointmentSchedulingApp.Controllers
                     loginViewModel.RememberMe,false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid Login attempt!");
             }
