@@ -14,7 +14,7 @@ namespace AppointmentSchedulingApp.Controllers
 
         public IActionResult Index()
         {
-            _serivce.GetDoctorList();
+            ViewBag.DoctorList =  _serivce.GetDoctorList();
             return View();
         }
     }
