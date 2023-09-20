@@ -1,48 +1,80 @@
 ﻿using AppointmentSchedulingApp.Models;
 using AppointmentSchedulingApp.Models.ViewModels;
 using AppointmentSchedulingApp.Utility;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppointmentSchedulingApp.Services
 {
     public class AppointmentService : IAppointmentService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AppointmentService(ApplicationDbContext context)
+        public AppointmentService(ApplicationDbContext context,UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        //method to Add/Update an appointment
+        public async Task<int> AddUpdate(AppointmentVM model)
+        {
+            var startDate = DateTime.Parse(model.StartDate);
+            var endDate = DateTime.Parse(model.StartDate).AddMinutes(Convert.ToDouble(model.Duration));
+
+            if(model != null && model.Id > 0)
+            {
+                //update an existing appointment
+                return 1;
+            }
+            else
+            {
+                //create a new appointment
+                Appointment appointment = new Appointment()
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Duration = model.Duration,
+                    DoctorId = model.DoctorId,
+                    PatientId = model.PatientId,
+                    IsDoctorApproved = false,
+                    AdminId = model.AdminId
+
+                };
+
+                _context.Appointments.Add(appointment);
+                await _context.SaveChangesAsync();
+                return 2;
+            }
         }
 
         //Get list of All Doctors
-        public List<DoctorVM> GetDoctorList()
+        public async Task<List<DoctorVM>> GetDoctorList()
         {
-            var doctors = (from users  in _context.Users
-                           join userRoles in _context.UserRoles on users.Id equals userRoles.UserId
-                           join Roles in _context.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId 
-                           equals Roles.Id
-                           select new DoctorVM
-                           {
-                               Id = users.Id,
-                               Name = users.Name
+            var doctors = await _userManager.GetUsersInRoleAsync(Utility.Helper.Doctor);
+            
+            var doctorVM = doctors.Select(user => new DoctorVM {
+                   Id = user.Id,
+                   Name = user.Name
                            
-                           }).ToList();
-            return doctors;
+            }).ToList();
+            return doctorVM;
         }
 
         //Get List of All Patients
-        public List<PatientVM> GetPatientList()
+        public async Task<List<PatientVM>> GetPatientList()
         {
-            var patient = (from users in _context.Users
-                           join userRoles in _context.UserRoles on users.Id equals userRoles.UserId
-                           join Roles in _context.Roles.Where(x => x.Name == Helper.Patient) on userRoles.RoleId
-                           equals Roles.Id
-                           select new PatientVM
-                           {
-                               Id = users.Id,
-                               Name = users.Name
+            var patient = await _userManager.GetUsersInRoleAsync(Utility.Helper.Patient);
 
-                           }).ToList();
-            return patient;
+            var patientVM = patient.Select(user => new PatientVM 
+            {
+                Id = user.Id,
+                Name = user.Name
+
+            }).ToList();
+            return patientVM;
         }
     }
 }

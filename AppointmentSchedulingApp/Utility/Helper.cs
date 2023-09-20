@@ -8,6 +8,19 @@ namespace AppointmentSchedulingApp.Utility
         public static string Patient = "Patient";
         public static string Doctor = "Doctor";
 
+        public static string apppointmentAdded = "Appointment added successfully.";
+        public static string apppointmentUpdated = "Appointment updated successfully.";
+        public static string apppointmentDeleted = "Appointment deleted successfully.";
+        public static string apppointmentExists = "Appointment for selected time and date already exists.";
+        public static string apppointmentNotExists = "Appointment does not exists.";
+        
+        public static string apppointmentAddError = "Something went wrong while trying to add appointment,please try again.";
+        public static string apppointmentUpdateError = "Something went wrong while trying to update appointment,please try again.";
+        public static string somtimgWentWrong = "Something went wrong,please try again.";
+
+        public static int success_code = 1;
+        public static int failure_code = 0;
+
         public static List<SelectListItem> GetRolesForDropDown() {
             return new List<SelectListItem>
             {
@@ -17,6 +30,7 @@ namespace AppointmentSchedulingApp.Utility
             };
         }
 
+        //function for the time drop down list
         public static List<SelectListItem> GetTimeDropDown()
         {
             int minute = 60;

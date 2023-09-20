@@ -13,10 +13,10 @@ namespace AppointmentSchedulingApp.Controllers
             _serivce = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.DoctorList =  _serivce.GetDoctorList();
-            ViewBag.PatientList = _serivce.GetPatientList();
+            ViewBag.DoctorList =  await _serivce.GetDoctorList();
+            ViewBag.PatientList = await _serivce.GetPatientList();
             ViewBag.Duration = Helper.GetTimeDropDown();
             return View();
         }

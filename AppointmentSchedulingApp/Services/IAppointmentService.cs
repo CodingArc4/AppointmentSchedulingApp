@@ -4,7 +4,9 @@ namespace AppointmentSchedulingApp.Services
 {
     public interface IAppointmentService
     {
-        public List<DoctorVM> GetDoctorList();
-        public List<PatientVM> GetPatientList();
+        public Task<List<DoctorVM>> GetDoctorList();
+        public Task<List<PatientVM>> GetPatientList();
+
+        public Task<int> AddUpdate(AppointmentVM model);
     }
 }
