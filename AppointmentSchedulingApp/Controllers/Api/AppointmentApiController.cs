@@ -24,6 +24,7 @@ namespace AppointmentSchedulingApp.Controllers.Api
             role = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
         }
 
+        //Api endpoint for saving calendar data
         [HttpPost]
         [Route("SaveCalendarData")]
         public IActionResult SaveCalendarData(AppointmentVM data)
