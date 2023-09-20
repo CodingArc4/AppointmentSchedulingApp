@@ -11,7 +11,7 @@
         public string DoctorId { get; set; }
         public string PatientId { get; set; }
         public bool IsDoctorApproved { get; set; }
-        public string AdminId { get; set; }
+        public string? AdminId { get; set; }
 
     }
 }

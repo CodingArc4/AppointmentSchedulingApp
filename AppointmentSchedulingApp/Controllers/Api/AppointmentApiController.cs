@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace AppointmentSchedulingApp.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/Appointment")]
     [ApiController]
     public class AppointmentApiController : Controller
     {
@@ -37,11 +37,13 @@ namespace AppointmentSchedulingApp.Controllers.Api
                 if(commonResponse.status == 1)
                 {
                     commonResponse.message = Helper.apppointmentUpdated;
+                    commonResponse.status = Helper.success_code;
                 } 
                 
                 if(commonResponse.status == 2)
                 {
                     commonResponse.message = Helper.apppointmentAdded;
+                    commonResponse.status = Helper.success_code;
                 }
             }
             catch(Exception ex) 
