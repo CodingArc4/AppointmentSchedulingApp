@@ -1,4 +1,5 @@
 ﻿using AppointmentSchedulingApp.Services;
+using AppointmentSchedulingApp.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentSchedulingApp.Controllers
@@ -16,6 +17,7 @@ namespace AppointmentSchedulingApp.Controllers
         {
             ViewBag.DoctorList =  _serivce.GetDoctorList();
             ViewBag.PatientList = _serivce.GetPatientList();
+            ViewBag.Duration = Helper.GetTimeDropDown();
             return View();
         }
     }
