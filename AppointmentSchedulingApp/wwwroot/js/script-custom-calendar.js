@@ -47,6 +47,7 @@ function onCloseModal() {
 
 //function to submit data through api call
 function onSubmitForm() {
+
     if (checkValidation()) {
 
         var requestData = {
@@ -67,7 +68,7 @@ function onSubmitForm() {
             contentType: 'application/json',
             success: function (response) {
                 if (response.status === 1 || response.status === 2) {
-                    debugger;
+                    //debugger;
                     $.notify(response.message, "success");
                     onCloseModal();
                 }
@@ -85,8 +86,10 @@ function onSubmitForm() {
 
 //function to check validation
 function checkValidation() {
+
     var isValid = true;
-    if ($("#title").val() === undefined || $("#title".val() === "") {
+
+    if ($("#title").val() === undefined || $("#title").val() === "") {
         isValid = false;
         $("#title").addClass("error");
     }
@@ -94,12 +97,12 @@ function checkValidation() {
         $("#title").removeClass("error");
     }
 
-    if ($("#appointmentDate").val() === undefined || $("#appointmentDate".val() === "") {
+    if ($("#appointmentDate").val() === undefined || $("#appointmentDate").val() === "") {
         isValid = false;
         $("#appointmentDate").addClass("error");
     }
     else {
-        $("#title").removeClass("error");
+        $("#appointmentDate").removeClass("error");
     }
 
     return isValid;
