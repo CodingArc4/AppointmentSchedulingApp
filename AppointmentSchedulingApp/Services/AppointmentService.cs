@@ -76,5 +76,35 @@ namespace AppointmentSchedulingApp.Services
             }).ToList();
             return patientVM;
         }
+
+        public List<AppointmentVM> PatientsEventById(string patientsId)
+        {
+            return _context.Appointments.Where(x => x.PatientId == patientsId).ToList().Select(x => new AppointmentVM()
+            {
+                Id = x.Id,
+                Description = x.Description,
+                StartDate = x.StartDate.ToString("yyy-MM-dd HH:mm:ss"),
+                EndDate = x.EndDate.ToString("yyy-MM-dd HH:mm:ss"),
+                Title = x.Title,
+                Duration = x.Duration,
+                IsDoctorApproved = x.IsDoctorApproved
+
+            }).ToList();
+        }
+
+        public List<AppointmentVM> DoctorsEventById(string doctorsId)
+        {
+            return _context.Appointments.Where(x => x.DoctorId == doctorsId).ToList().Select(x => new AppointmentVM()
+            {
+                Id = x.Id,
+                Description = x.Description,
+                StartDate = x.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                EndDate = x.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Title = x.Title,
+                Duration = x.Duration,
+                IsDoctorApproved = x.IsDoctorApproved
+
+            }).ToList();
+        }
     }
 }
