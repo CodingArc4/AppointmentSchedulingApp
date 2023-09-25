@@ -10,6 +10,8 @@ $(document).ready(function () {
     });
     InitializeCalendar();
 });
+
+
 var calendar;
 function InitializeCalendar() {
     try {
@@ -34,7 +36,7 @@ function InitializeCalendar() {
                         contentType: 'json',
                         success: function (response) {
                             var events = [];
-                            debugger;
+                          
                             if (response.status === 1) {
                                 $.each(response.dataenum, function (i, data) {
                                     events.push({
@@ -74,6 +76,17 @@ function InitializeCalendar() {
 
 //function to open modal when clicked on a date
 function onShowModal(obj, isEventDetail) {
+    if (isEventDetail != null) {
+
+        $("#title").val(obj.title);
+        $("#description").val(obj.description);
+        $("#appointmentDate").val(obj.startDate);
+        $("#duration").val(obj.duration);
+        $("#doctorId").val(obj.doctorId);
+        $("#patientId").val(obj.patientId);
+        $("#id").val(obj.id);
+
+    }
     $('#appointmentInput').modal("show");
 }
 
@@ -104,7 +117,6 @@ function onSubmitForm() {
             contentType: 'application/json',
             success: function (response) {
                 if (response.status === 1 || response.status === 2) {
-                    onDoctorChange();
                     $.notify(response.message, "success");
                     onCloseModal();
                 }
@@ -140,4 +152,23 @@ function checkValidation() {
     }
 
     return isValid;
+}
+
+
+//function to get event details by id
+function getEventDetailsByEventId(info) {
+    $.ajax({
+        url: routeURL + '/api/Appointment/GetCalendarDataById/' + info.id,
+        type: 'GET',
+        contentType: 'json',
+        success: function (response) {
+            if (response.status === 1 && response.dataenum !== undefined) {
+                onShowModal(response.dataenum,true)
+            }
+            successCallback(events);
+        },
+        error: function (xhr) {
+            $.notify("Error", "error");
+        }
+    });
 }

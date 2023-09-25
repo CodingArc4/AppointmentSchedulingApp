@@ -79,32 +79,51 @@ namespace AppointmentSchedulingApp.Services
 
         public List<AppointmentVM> PatientsEventById(string patientsId)
         {
-            return _context.Appointments.Where(x => x.PatientId == patientsId).ToList().Select(x => new AppointmentVM()
+            return _context.Appointments.Where(x => x.PatientId == patientsId).ToList().Select(c => new AppointmentVM()
             {
-                Id = x.Id,
-                Description = x.Description,
-                StartDate = x.StartDate.ToString("yyy-MM-dd HH:mm:ss"),
-                EndDate = x.EndDate.ToString("yyy-MM-dd HH:mm:ss"),
-                Title = x.Title,
-                Duration = x.Duration,
-                IsDoctorApproved = x.IsDoctorApproved
+                Id = c.Id,
+                Description = c.Description,
+                StartDate = c.StartDate.ToString("yyy-MM-dd HH:mm:ss"),
+                EndDate = c.EndDate.ToString("yyy-MM-dd HH:mm:ss"),
+                Title = c.Title,
+                Duration = c.Duration,
+                IsDoctorApproved = c.IsDoctorApproved
 
             }).ToList();
         }
 
         public List<AppointmentVM> DoctorsEventById(string doctorsId)
         {
-            return _context.Appointments.Where(x => x.DoctorId == doctorsId).ToList().Select(x => new AppointmentVM()
+            return _context.Appointments.Where(x => x.DoctorId == doctorsId).ToList().Select(c => new AppointmentVM()
             {
-                Id = x.Id,
-                Description = x.Description,
-                StartDate = x.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                EndDate = x.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                Title = x.Title,
-                Duration = x.Duration,
-                IsDoctorApproved = x.IsDoctorApproved
+                Id = c.Id,
+                Description = c.Description,
+                StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Title = c.Title,
+                Duration = c.Duration,
+                IsDoctorApproved = c.IsDoctorApproved
 
             }).ToList();
+        }
+
+        public AppointmentVM GetById(int id)
+        {
+            return _context.Appointments.Where(x => x.Id == id).ToList().Select(c => new AppointmentVM()
+            {
+                Id = c.Id,
+                Description = c.Description,
+                StartDate = c.StartDate.ToString("yyy-MM-dd HH:mm:ss"),
+                EndDate = c.EndDate.ToString("yyy-MM-dd HH:mm:ss"),
+                Title = c.Title,
+                Duration = c.Duration,
+                IsDoctorApproved = c.IsDoctorApproved,
+                PatientId = c.PatientId,
+                DoctorId = c.DoctorId,
+                PatientName = _context.Users.Where(x => x.Id == c.PatientId).Select(x => x.Name).FirstOrDefault(), 
+                DoctorName = _context.Users.Where(x => x.Id == c.DoctorId).Select(x => x.Name).FirstOrDefault()
+
+            }).SingleOrDefault();
         }
     }
 }
