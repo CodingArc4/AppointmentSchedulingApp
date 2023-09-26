@@ -5,9 +5,7 @@ $(document).ready(function () {
         value: new Date(),
         dateInput: false
     });
-    $('#doctorId').change(function () {
-        onDoctorChange();
-    });
+
     InitializeCalendar();
 });
 
@@ -29,6 +27,7 @@ function InitializeCalendar() {
                 select: function (event) {
                     onShowModal(event, null);
                 },
+                //ajax api call to get calendar data and show it on the frontend.
                 events: function (fetchInfo, successCallback, failureCallback) {
                     $.ajax({
                         url: routeURL + '/api/Appointment/GetCalendarData?doctorId=' + $("#doctorId").val(),
@@ -70,7 +69,6 @@ function InitializeCalendar() {
     catch (e) {
         alert(e);
     }
-
 }
 
 
@@ -86,6 +84,10 @@ function onShowModal(obj, isEventDetail) {
         $("#patientId").val(obj.patientId);
         $("#id").val(obj.id);
 
+    //getting a calendar date whenever a user click on a date to schedule an appointment
+    } else {
+        $("#appointmentDate").val(obj.startStr + " " + new moment().format("hh:mm A"));
+        $("#id").val(0);
     }
     $('#appointmentInput').modal("show");
 }
@@ -171,4 +173,9 @@ function getEventDetailsByEventId(info) {
             $.notify("Error", "error");
         }
     });
+}
+
+//show different doctors appointments
+function onDoctorChange() {
+    calendar.refetchEvents();
 }
