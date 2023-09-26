@@ -42,6 +42,9 @@ namespace AppointmentSchedulingApp.Controllers
                     loginViewModel.RememberMe,false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(loginViewModel.Email);
+                    HttpContext.Session.SetString("ssuserName", user.Name);
+                    //var userName = HttpContext.Session.GetString("ssuserName");
                     return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid Login attempt!");

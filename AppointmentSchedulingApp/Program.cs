@@ -23,9 +23,7 @@ namespace AppointmentSchedulingApp
             builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 
             //Adding identity service
-            builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddDistributedMemoryCache();
 
@@ -34,6 +32,8 @@ namespace AppointmentSchedulingApp
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
