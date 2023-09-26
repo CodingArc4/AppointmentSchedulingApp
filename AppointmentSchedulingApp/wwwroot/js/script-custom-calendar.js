@@ -74,6 +74,7 @@ function InitializeCalendar() {
 
 //function to open modal when clicked on a date
 function onShowModal(obj, isEventDetail) {
+    //fill the modal with the inserted data
     if (isEventDetail != null) {
 
         $("#title").val(obj.title);
@@ -83,6 +84,15 @@ function onShowModal(obj, isEventDetail) {
         $("#doctorId").val(obj.doctorId);
         $("#patientId").val(obj.patientId);
         $("#id").val(obj.id);
+        $("#lblPatientName").html(obj.patientName);
+        $("#lblDoctorName").html(obj.doctorName);
+
+        if (obj.isDoctorApproved) {
+            $("#lblStatus").html("Approved");
+        }
+        else {
+            $("#lblStatus").html("Pending");
+        }
 
     //getting a calendar date whenever a user click on a date to schedule an appointment
     } else {
@@ -94,7 +104,14 @@ function onShowModal(obj, isEventDetail) {
 
 //function to close modal through close button
 function onCloseModal() {
-    //debugger
+    $("#appointmentForm")[0].reset();
+    $("#id").val(0);
+    $("#title").val('');
+    $("#description").val('');
+    $("#appointmentDate").val('');
+    $("#duration").val('');
+    $("#doctorId").val('');
+    $("#patientId").val('');
     $("#appointmentInput").modal("hide");
 } 
 
@@ -112,6 +129,7 @@ function onSubmitForm() {
             PatientId: $("#patientId").val(),
         };
 
+        //ajax api call to insert data into the calendar
         $.ajax({
             url: routeURL + '/api/Appointment/SaveCalendarData',
             type: 'POST',
@@ -119,6 +137,7 @@ function onSubmitForm() {
             contentType: 'application/json',
             success: function (response) {
                 if (response.status === 1 || response.status === 2) {
+                    calendar.refetchEvents();
                     $.notify(response.message, "success");
                     onCloseModal();
                 }

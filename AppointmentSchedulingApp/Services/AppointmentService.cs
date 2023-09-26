@@ -125,5 +125,15 @@ namespace AppointmentSchedulingApp.Services
 
             }).SingleOrDefault();
         }
+
+        public int Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> ConfirmEvent(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
