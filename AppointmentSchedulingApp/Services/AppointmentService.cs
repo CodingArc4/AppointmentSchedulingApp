@@ -2,6 +2,7 @@
 using AppointmentSchedulingApp.Models.ViewModels;
 using AppointmentSchedulingApp.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentSchedulingApp.Services
 {
@@ -25,6 +26,18 @@ namespace AppointmentSchedulingApp.Services
             if(model != null && model.Id > 0)
             {
                 //update an existing appointment
+                var appointment = _context.Appointments.FirstOrDefault(x => x.Id == model.Id);
+                appointment.Title = model.Title;
+                appointment.Description = model.Description;
+                appointment.StartDate = startDate;
+                appointment.EndDate = endDate;
+                appointment.Duration = model.Duration;
+                appointment.DoctorId = model.DoctorId;
+                appointment.PatientId = model.PatientId;
+                appointment.IsDoctorApproved = false;
+                appointment.AdminId = model.AdminId;
+
+                await _context.SaveChangesAsync();
                 return 1;
             }
             else
