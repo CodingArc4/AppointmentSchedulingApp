@@ -107,6 +107,7 @@ namespace AppointmentSchedulingApp.Services
             }).ToList();
         }
 
+        //method to get appointment by id
         public AppointmentVM GetById(int id)
         {
             return _context.Appointments.Where(x => x.Id == id).ToList().Select(c => new AppointmentVM()
@@ -126,14 +127,28 @@ namespace AppointmentSchedulingApp.Services
             }).SingleOrDefault();
         }
 
-        public int Delete(int id)
+        //method to delete an appointment
+        public async Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            var appointment = _context.Appointments.FirstOrDefault(x => x.Id == id);
+            if (appointment != null)
+            {
+                _context.Appointments.Remove(appointment);
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
         }
 
-        public Task<int> ConfirmEvent(int id)
+        //method to confirm an appointment
+        public async Task<int> ConfirmEvent(int id)
         {
-            throw new NotImplementedException();
+            var appointment = _context.Appointments.FirstOrDefault(x => x.Id == id);
+            if (appointment != null)
+            {
+                appointment.IsDoctorApproved = true;
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
         }
     }
 }

@@ -27,6 +27,14 @@ namespace AppointmentSchedulingApp
 
             builder.Services.AddHttpContextAccessor();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromDays(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -45,6 +53,8 @@ namespace AppointmentSchedulingApp
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

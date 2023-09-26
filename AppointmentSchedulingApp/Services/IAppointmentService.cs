@@ -10,6 +10,7 @@ namespace AppointmentSchedulingApp.Services
         public List<AppointmentVM> DoctorsEventById(string doctorsId);
         public List<AppointmentVM> PatientsEventById(string patientsId);
         public AppointmentVM GetById(int id);
-        public int Delete(int id);
+        public Task<int> Delete(int id);
+        public Task<int> ConfirmEvent(int id);
     }
 }
